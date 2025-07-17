@@ -1,0 +1,5 @@
+flask
+gunicorn
+google-api-python-client
+pytz
+youtube-search-python
