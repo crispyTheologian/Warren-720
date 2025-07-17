@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Radio Offline</title>
+  <style>
+    body { font-family: sans-serif; padding: 2em; background: #fafafa; color: #333; }
+    h1 { margin-bottom: 0.5em; }
+    #countdown { font-size: 1.5em; margin-top: 1em; }
+  </style>
+</head>
+<body>
+  <h1>The stream is offline.</h1>
+
+  {% if start_time %}
+    <p>Next broadcast begins in:</p>
+    <div id="countdown">Loading...</div>
+
+    <script>
+      const startTime = new Date("{{ start_time }}").getTime();
+
+      function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = startTime - now;
+
+        if (distance <= 0) {
+          document.getElementById("countdown").innerText = "Broadcast should be live!";
+          return;
+        }
+
+        const hours = Math.floor(distance / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("countdown").innerText =
+          `${hours}h ${minutes}m ${seconds}s`;
+
+        setTimeout(updateCountdown, 1000);
+      }
+
+      updateCountdown();
+    </script>
+  {% else %}
+    <p>No upcoming broadcasts found.</p>
+  {% endif %}
+</body>
+</html>
+
